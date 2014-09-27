@@ -112,31 +112,6 @@ bool HashTable::pSearch(int i, Node *n)
 	}
 }
 
-bool HashTable::deleteValue(int i)
-{
-	int testIndex = ((i * i) % 7);
-	Node *n = bucket[testIndex];
-
-	if (n != NULL)
-	{
-		if (i == n->getValue())
-		{
-			cout << "Found" << endl;
-			// Remove node
-			// if there was a previous node, make it point to the next node
-		}	
-
-		// Because this is not a double-linked list (no *prev), we need to look ahead two steps
-		// CurrentIndex -> Next -> Next-Next
-		// So we can change *pNext accordingly. In this scenario, if we remove "Next", we can easily
-		// make "CurrentIndex" point to "Next-Next". Otherwise, we would be unable to change the
-		// "CurrentIndex" pointer to anything, and would get a segmentation fault.
-		//
-		// TODO: Finish deleteValue();
-	}
-
-}
-
 bool HashTable::pSilentsearch(int i, Node *n)
 {
 	bool tf;

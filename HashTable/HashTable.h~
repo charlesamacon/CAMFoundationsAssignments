@@ -17,7 +17,6 @@ public:
 
 	void insert(int data);
 	void print();
-	void deleteValue(int data);
 	bool search(int i, bool s);
 };
 
