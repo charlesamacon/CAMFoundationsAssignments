@@ -16,7 +16,6 @@ public:
 	~HashTable();
 
 	void insert(int data);
-	void listCollision(int pos);
 	void print();
 	bool search(int i, bool s);
 };

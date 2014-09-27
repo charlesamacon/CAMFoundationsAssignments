@@ -1,3 +1,8 @@
+// Charles Alan Macon
+// CSCE 2110 - Fall 2014
+// Programming Assignment 1
+// Open Hash Table
+
 #include <iostream>
 #include <sstream>
 #include "HashTable.h"

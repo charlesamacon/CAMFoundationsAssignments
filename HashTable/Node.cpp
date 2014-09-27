@@ -63,7 +63,7 @@ void Node::printNodes()
 {
 	if (value == 0)
 	{
-
+		// Print nothing as per assignment.
 	}
 	else
 	{
@@ -97,8 +97,4 @@ bool Node::searchNodes(int i)
 		return true;
 
 	return false;
-
-
-	//cout << "Value Not Found!" << endl;
-
 }
