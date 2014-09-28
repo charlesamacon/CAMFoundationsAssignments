@@ -7,17 +7,17 @@ HashTable::HashTable()
 	int i;
 	for (i = 0; i < 7; i++)
 	{
-		cout << "Creating bucket " << i << endl;
+		//cout << "Creating bucket " << i << endl;
 
 		Node * b = new Node(NULL);
 		bucket[i] = b;
 	}
-
 }
 
 
 HashTable::~HashTable()
 {
+	// DEFAULT DECONSTRUCTOR
 }
 
 
@@ -40,6 +40,8 @@ void HashTable::insert(int data)
 		}
 		else
 		{
+			// This isn't useful at this point, but I might need
+			// to expand upon this later.
 			Node * last = new Node();
 			last = bucket[bucketIndex]->getLast();
 
@@ -52,6 +54,9 @@ void HashTable::insert(int data)
 void HashTable::print()
 {
 	int i;
+
+	// There are only 7 buckets, so this is hardcoded. Otherwise, we would
+	// just pass this in as a variable.
 	for (i = 0; i < 7; i++)
 	{
 		cout << "(";
@@ -72,93 +77,108 @@ bool HashTable::search(int i, bool s)
 {
 	int testIndex = ((i * i) % 7);
 
-	if (s == false)
-	{
-		return pSearch(i, bucket[testIndex]);
-	}
-	else
-	{
-		return pSilentsearch(i, bucket[testIndex]);
-	}
+	// The bool denotes whether or not the search function is silent. Kinda cool.
+	return pSearch(i, bucket[testIndex], s);
 }
 
-bool HashTable::pSearch(int i, Node *n)
+bool HashTable::pSearch(int i, Node *n, bool s)
 {
-	cout << "Searching for " << i << endl;
+	//cout << "Searching for " << i << endl;
 	bool tf;
 	if (n != NULL)
 	{
 		if (i == n->getValue())
 		{
-			cout << "Found" << endl;
+			if (!s)
+			{
+				cout << "True" << endl;
+			}
 			tf = true;
 			return true;
 		}
 		else if (n->getNext() != NULL)
 		{
 			Node *ne = n->getNext();
-			pSearch(i, ne);
+			pSearch(i, ne, s);
 		}
 		else
 		{
-			cout << "Not Found" << endl;
+			if (!s)
+			{
+				cout << "False" << endl;
+			}
 			return false;
 		}
 	}
 	else
 	{
-		cout << "Null Found" << endl;
+		//cout << "Null Found" << endl;
+		if (!s)
+		{
+			cout << "False" << endl;
+		}
 		return false;
 	}
+	// For some reason, this negates all the work I've done
+	// return false;
 }
 
-bool HashTable::deleteValue(int i)
+void HashTable::deleteValue(int i)
 {
 	int testIndex = ((i * i) % 7);
-	Node *n = bucket[testIndex];
+	
+	deleteValue(i, testIndex, bucket[testIndex]);
 
-	if (n != NULL)
-	{
-		if (i == n->getValue())
-		{
-			cout << "Found" << endl;
-			// Remove node
-			// if there was a previous node, make it point to the next node
-		}	
-
-		// Because this is not a double-linked list (no *prev), we need to look ahead two steps
-		// CurrentIndex -> Next -> Next-Next
-		// So we can change *pNext accordingly. In this scenario, if we remove "Next", we can easily
-		// make "CurrentIndex" point to "Next-Next". Otherwise, we would be unable to change the
-		// "CurrentIndex" pointer to anything, and would get a segmentation fault.
-		//
-		// TODO: Finish deleteValue();
-	}
-
+	return;
 }
 
-bool HashTable::pSilentsearch(int i, Node *n)
+void HashTable::deleteValue(int i, int index, Node *n)
 {
+	//cout << "Searching for " << i << endl;
 	bool tf;
+
 	if (n != NULL)
 	{
 		if (i == n->getValue())
 		{
-			tf = true;
-			return true;
+			//This should only be seen if the value happens
+			//to be the first node.
+			Node *next = n->getNext();
+			
+			bucket[index] = next;
+			delete n;
+			
 		}
 		else if (n->getNext() != NULL)
 		{
-			Node *ne = n->getNext();
-			pSilentsearch(i, ne);
+			Node *next = n->getNext();
+
+			if (i == next->getValue())
+			{
+				// Delete that node, move this nodes' next pointer to the next-next node
+				// Sometimes the most elegant solution doesn't work.
+				if (next->getNext() != NULL)
+				{
+					Node *nextNext = next->getNext();
+					n->setNext(nextNext);
+					delete next;
+				}
+				else
+				{
+					n->setNext(nullptr);
+					delete next;
+				}
+			}
+			else
+			{
+				// We don't need the bucketIndex anymore
+				deleteValue(i, NULL, next);
+			}
 		}
 		else
 		{
-			return false;
+			cout << "WARNING: Target Value Not Found: " << i << endl;
+			return;
 		}
-	}
-	else
-	{
-		return false;
 	}
 }

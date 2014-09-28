@@ -11,6 +11,7 @@ Node::Node()
 
 Node::Node(int data)
 {
+	// Basic node is basic.
 	setValue(data);
 	setNext(NULL);
 }

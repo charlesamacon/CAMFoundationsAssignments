@@ -9,8 +9,8 @@ class HashTable
 private:
 	Node * bucket[7];
 	int bucketIndex;
-	bool pSearch(int i, Node *n);
-	bool pSilentsearch(int i, Node *n);
+	bool pSearch(int i, Node *n, bool s);
+	void deleteValue(int data, int index, Node *n);
 public:
 	HashTable();
 	~HashTable();
