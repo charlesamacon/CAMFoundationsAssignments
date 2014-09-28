@@ -165,7 +165,7 @@ void HashTable::deleteValue(int i, int index, Node *n)
 				}
 				else
 				{
-					n->setNext(nullptr);
+					n->setNext(NULL);
 					delete next;
 				}
 			}
